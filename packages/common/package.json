@@ -9,7 +9,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc --outDir lib"
+    "build": "tsc --outDir lib",
+    "prepack": "yarn run -T copyfiles -f ../../README.md ./"
   },
   "repository": {
     "type": "git",
