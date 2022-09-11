@@ -214,7 +214,7 @@ export class TcpClient extends streams.Duplex implements Socket {
       };
       try {
         this._updateOps();
-      } catch (e) {
+      } catch (e: any) {
         this.pendingWrite = null;
         callback(e);
       }
