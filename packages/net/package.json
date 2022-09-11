@@ -1,0 +1,37 @@
+{
+  "name": "@java-script/net",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc --outDir lib",
+    "prepack": "yarn run -T copyfiles -f ../../README.md ./",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example:both": "yarn workspace @java-script/common build && yarn example",
+    "example": "yarn run example:build && yarn run example:run",
+    "example:run": "yarn run -T run-in-rhino packages/net/.build/example/index.js",
+    "example:build": "webpack --config webpack.example.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jc-lab/java-script-basic.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jc-lab/java-script-basic/issues"
+  },
+  "homepage": "https://github.com/jc-lab/java-script-basic#readme",
+  "dependencies": {
+    "@java-script/common": "workspace:^",
+    "node-synchronized": "^1.0.1"
+  },
+  "devDependencies": {
+    "readable-stream": "^3.6.0"
+  }
+}

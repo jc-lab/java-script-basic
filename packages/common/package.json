@@ -1,0 +1,27 @@
+{
+  "name": "@java-script/common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc --outDir lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jc-lab/java-script-basic.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jc-lab/java-script-basic/issues"
+  },
+  "homepage": "https://github.com/jc-lab/java-script-basic#readme",
+  "dependencies": {
+    "iconv-lite": "^0.6.3"
+  }
+}
