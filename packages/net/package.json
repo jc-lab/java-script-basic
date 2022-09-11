@@ -9,7 +9,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc --outDir lib",
+    "build": "tsc --project tsconfig.dist.json --outDir lib",
     "prepack": "yarn run -T copyfiles -f ../../README.md ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "example:both": "yarn workspace @java-script/common build && yarn example",

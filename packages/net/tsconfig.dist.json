@@ -1,15 +1,17 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "outDir": ".build/tsc",
-    "baseUrl": "."
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "rootDir": "src"
   },
   "include": [
-    "src",
-    "example.ts"
+    "src"
   ],
   "exclude": [
     "node_modules"

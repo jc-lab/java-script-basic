@@ -9,7 +9,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc --outDir lib",
+    "build": "tsc --project tsconfig.dist.json --outDir lib",
     "prepack": "yarn run -T copyfiles -f ../../README.md ./"
   },
   "repository": {
