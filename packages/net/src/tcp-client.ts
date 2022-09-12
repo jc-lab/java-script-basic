@@ -214,18 +214,26 @@ export class TcpClient extends streams.Duplex implements Socket {
 
   _write(chunk: any, encoding: BufferEncoding, callback: (error?: (Error | null)) => void) {
     this.queue.synchronized(() => new Promise<void>((resolve) => {
-      this.pendingWrite = {
-        callback: (err) => {
-          callback(err);
-          resolve();
-        },
-        data: chunk
+      const doit = () => {
+        this.pendingWrite = {
+          callback: (err) => {
+            callback(err);
+            resolve();
+          },
+          data: chunk
+        };
+        try {
+          this._updateOps();
+        } catch (e: any) {
+          this.pendingWrite = null;
+          callback(e);
+        }
       };
-      try {
-        this._updateOps();
-      } catch (e: any) {
-        this.pendingWrite = null;
-        callback(e);
+
+      if (this.isConnected()) {
+        doit();
+      } else {
+        this.once('connect', doit);
       }
     }));
   }

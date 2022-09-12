@@ -68,30 +68,37 @@ export class EventLoop {
   }
 
   private selectorLoop(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const count = this.selector.selectNow();
-      if (!count) {
-        resolve();
-      }
-      const selectedKeys = this.selector.selectedKeys();
-      const iterator = selectedKeys.iterator();
-      const next = () => {
-        if (iterator.hasNext()) {
-          const selectionKey = iterator.next();
-          const context = selectionKey.attachment() as SelectionContext;
-          Promise.resolve()
-            .then(() => {
-              return context.handler(selectionKey);
-            })
-            .then(() => {
-              iterator.remove();
-              next();
-            });
-        } else {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const count = this.selector.selectNow();
+        if (!count) {
           resolve();
+          return;
         }
-      };
-      next();
+        const selectedKeys = this.selector.selectedKeys();
+        const iterator = selectedKeys.iterator();
+        const next = () => {
+          if (iterator.hasNext()) {
+            const selectionKey = iterator.next();
+            iterator.remove();
+
+            const context = selectionKey.attachment() as SelectionContext;
+            Promise.resolve()
+              .then(() => {
+                return context.handler(selectionKey);
+              })
+              .then(() => {
+                next();
+              })
+              .catch((e) => reject(e));
+          } else {
+            resolve();
+          }
+        };
+        next();
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 }
