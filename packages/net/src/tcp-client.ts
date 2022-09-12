@@ -142,10 +142,9 @@ export class TcpClient extends streams.Duplex implements Socket {
           let handled = false;
           handled = (handled) ? handled : selectionKey.isWritable() && this.callWriteCallback(e);
           if (!handled) {
+            // JavaException
             this.emit('error', e);
-            if (selectionKey.isConnectable()) {
-              this.destroy(e);
-            }
+            this.destroy(e);
           }
         }
       })
