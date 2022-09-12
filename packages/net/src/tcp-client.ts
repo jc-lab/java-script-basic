@@ -143,6 +143,9 @@ export class TcpClient extends streams.Duplex implements Socket {
           handled = (handled) ? handled : selectionKey.isWritable() && this.callWriteCallback(e);
           if (!handled) {
             this.emit('error', e);
+            if (selectionKey.isConnectable()) {
+              this.destroy(e);
+            }
           }
         }
       })
@@ -225,6 +228,7 @@ export class TcpClient extends streams.Duplex implements Socket {
     if (this.selectionContext) {
       this.selectionContext.close();
     }
+    this.emit('close', !!error);
   }
 
   eventNames(): Array<string | symbol> {
