@@ -152,7 +152,6 @@ export class TcpClient extends streams.Duplex implements Socket {
 
         this._readyState = 'opening';
         channel.connect(socketAddress);
-        print('connecting2');
       })
       .catch((err) => {
         this.emit('error', err);
