@@ -106,6 +106,11 @@ export class TcpClient extends streams.Duplex implements Socket {
       channel,
       SelectionKey.OP_CONNECT,
       (selectionKey) => {
+        if (!selectionKey.isValid()) {
+          // TODO: it is ok?
+          this.destroy();
+          return ;
+        }
         const isConnectable = selectionKey.isConnectable();
         const isWritable = selectionKey.isWritable();
         const isReadable = selectionKey.isReadable();
