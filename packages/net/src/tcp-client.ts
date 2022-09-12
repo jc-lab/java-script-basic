@@ -106,8 +106,11 @@ export class TcpClient extends streams.Duplex implements Socket {
       channel,
       SelectionKey.OP_CONNECT,
       (selectionKey) => {
+        const isConnectable = selectionKey.isConnectable();
+        const isWritable = selectionKey.isWritable();
+        const isReadable = selectionKey.isReadable();
         try {
-          if (selectionKey.isConnectable()) {
+          if (isConnectable) {
             if (channel.isConnectionPending()) {
               channel.finishConnect();
             }
@@ -117,7 +120,7 @@ export class TcpClient extends streams.Duplex implements Socket {
             }
             this.emit('connect');
             this.emit('ready');
-          } else if (selectionKey.isReadable()) {
+          } else if (isReadable) {
             const size = this.currentRead.size;
             if (!this.currentRead.buffer || this.currentRead.buffer.capacity() < size) {
               this.currentRead.buffer = ByteBuffer.allocate(size);
@@ -134,13 +137,13 @@ export class TcpClient extends streams.Duplex implements Socket {
               this.push(null);
               this.destroy();
             }
-          } else if (selectionKey.isWritable()) {
+          } else if (isWritable) {
             this.callWriteCallback();
             this._updateOps();
           }
         } catch (e: any) {
           let handled = false;
-          handled = (handled) ? handled : selectionKey.isWritable() && this.callWriteCallback(e);
+          handled = (handled) ? handled : isWritable && this.callWriteCallback(e);
           if (!handled) {
             // JavaException
             this.emit('error', e);
