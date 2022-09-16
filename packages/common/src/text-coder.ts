@@ -7,8 +7,8 @@ export class TextEncoder {
 }
 
 export class TextDecoder {
-  encode(input: string): Buffer {
-    return iconv.encode(input, 'utf8');
+  decode(input: Buffer): string {
+    return iconv.decode(input, 'utf8');
   }
 }
 
